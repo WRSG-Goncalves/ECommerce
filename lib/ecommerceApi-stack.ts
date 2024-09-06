@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib"
-import * as apigateway from "aws-cdk-lib/aws-apigateway"
 import * as lambdaNodeJS from "aws-cdk-lib/aws-lambda-nodejs"
+import * as apigateway from "aws-cdk-lib/aws-apigateway"
 import * as cwlogs from "aws-cdk-lib/aws-logs"
 import { Construct } from "constructs"
 
@@ -41,14 +41,14 @@ export class ECommerceApiStack extends cdk.Stack {
    }
 
    private createOrdersService(props: ECommerceApiStackProps, api: apigateway.RestApi) {
-      const ordersIntegration = new apigateway.LambdaIntegration(props.ordersHandler)
+      const ordersIntegration = new apigateway.LambdaIntegration(props.ordersHandler)      
 
       //resource - /orders
       const ordersResource = api.root.addResource('orders')
 
       //GET /orders
-      //GET /orders?email=wilson@goncalves.com.br
-      //GET /orders?email=wilson@goncalves.com.br&orderId=123
+      //GET /orders?email=matilde@siecola.com.br
+      //GET /orders?email=matilde@siecola.com.br&orderId=123
       ordersResource.addMethod("GET", ordersIntegration)
 
       const orderDeletionValidator = new apigateway.RequestValidator(this, "OrderDeletionValidator", {
@@ -57,7 +57,7 @@ export class ECommerceApiStack extends cdk.Stack {
          validateRequestParameters: true,
       })
 
-      //DELETE /orders?email=wilson@goncalves.com.br&orderId=123
+      //DELETE /orders?email=matilde@siecola.com.br&orderId=123
       ordersResource.addMethod("DELETE", ordersIntegration, {
          requestParameters: {
             'method.request.querystring.email': true,

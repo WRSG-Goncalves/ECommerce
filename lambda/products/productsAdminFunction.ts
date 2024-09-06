@@ -1,9 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { DynamoDB, Lambda } from "aws-sdk";
-import * as AWSXRay from "aws-xray-sdk";
-//import { ProductEvent, ProductEventType } from "/opt/nodejs/productEventsLayer";
-import { ProductEvent, ProductEventType } from "./layers/productEventsLayer/nodejs/productEvent";
 import { Product, ProductRepository } from "/opt/nodejs/productsLayer";
+import { DynamoDB, Lambda } from "aws-sdk"
+import { ProductEvent, ProductEventType } from "/opt/nodejs/productEventsLayer";
+import * as AWSXRay from "aws-xray-sdk"
 
 AWSXRay.captureAWS(require("aws-sdk"))
 
@@ -15,7 +14,7 @@ const lambdaClient = new Lambda()
 
 const productRepository = new ProductRepository(ddbClient, productsDdb)
 
-export async function handler(event: APIGatewayProxyEvent,
+export async function handler(event: APIGatewayProxyEvent, 
    context: Context): Promise<APIGatewayProxyResult> {
 
    const lambdaRequestId = context.awsRequestId
@@ -28,9 +27,9 @@ export async function handler(event: APIGatewayProxyEvent,
       const product = JSON.parse(event.body!) as Product
       const productCreated = await productRepository.create(product)
 
-      const response = await sendProductEvent(productCreated,
+      const response = await sendProductEvent(productCreated, 
          ProductEventType.CREATED,
-         "wilsonrsg@goncalves.com.br", lambdaRequestId)
+         "matilde@siecola.com.br", lambdaRequestId)
       console.log(response)
 
       return {
@@ -45,15 +44,15 @@ export async function handler(event: APIGatewayProxyEvent,
          try {
             const productUpdated = await productRepository.updateProduct(productId, product)
 
-            const response = await sendProductEvent(productUpdated,
+            const response = await sendProductEvent(productUpdated, 
                ProductEventType.UPDATED,
-               "thais@goncalves.com.br", lambdaRequestId)
+               "doralice@siecola.com.br", lambdaRequestId)
             console.log(response)
-
+      
             return {
                statusCode: 200,
                body: JSON.stringify(productUpdated)
-            }
+            }      
          } catch (ConditionalCheckFailedException) {
             return {
                statusCode: 404,
@@ -65,9 +64,9 @@ export async function handler(event: APIGatewayProxyEvent,
          try {
             const product = await productRepository.deleteProduct(productId)
 
-            const response = await sendProductEvent(product,
+            const response = await sendProductEvent(product, 
                ProductEventType.DELETED,
-               "wesley@goncalves.com.br", lambdaRequestId)
+               "hannah@siecola.com.br", lambdaRequestId)
             console.log(response)
 
             return {
@@ -79,7 +78,7 @@ export async function handler(event: APIGatewayProxyEvent,
             return {
                statusCode: 404,
                body: (<Error>error).message
-            }
+            }   
          }
       }
    }
@@ -90,8 +89,8 @@ export async function handler(event: APIGatewayProxyEvent,
    }
 }
 
-function sendProductEvent(product: Product,
-   eventType: ProductEventType, email: string,
+function sendProductEvent(product: Product, 
+   eventType: ProductEventType, email: string, 
    lambdaRequestId: string) {
 
    const event: ProductEvent = {

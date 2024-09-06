@@ -5,7 +5,6 @@
     "lib": [
       "es2018"
     ],
-    "outDir": "./dist",
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -28,9 +27,11 @@
       "/opt/nodejs/productsLayer":[
         "lambda/products/layers/productsLayer/nodejs/productRepository"
       ],
-
-       "/opt/nodejs/productEventLayer":[
-        "lambda/products/layers/productEventLayer/nodejs/productEvent"
+      "/opt/nodejs/productEventsLayer":[
+        "lambda/products/layers/productEventsLayer/nodejs/productEvent"
+      ],
+      "/opt/nodejs/ordersLayer":[
+        "lambda/orders/layers/ordersLayer/nodejs/orderRepository"
       ],
       "/opt/nodejs/ordersApiLayer":[
         "lambda/orders/layers/ordersApiLayer/nodejs/orderApi"
@@ -39,8 +40,6 @@
   },
   "exclude": [
     "node_modules",
-    "cdk.out",
-    "dist"
-
+    "cdk.out"
   ]
 }

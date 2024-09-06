@@ -21,7 +21,6 @@ const tags = {
   team: process.env.TEAM || (() => { throw new Error("TEAM environment variable is not defined") })(),
 }
 
-
 const productsAppLayersStack = new ProductsAppLayersStack(app, "ProductsAppLayers", {
   tags: tags,
   env: env
